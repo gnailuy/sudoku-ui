@@ -76,6 +76,32 @@ describe('GameBoard', () => {
     expect(setSelected).toHaveBeenCalledWith([0, 2]);
   });
 
+  it('commits desktop pointer selection before the click completes', () => {
+    const setSelected = vi.fn();
+    render(
+      <GameBoard
+        session={makeSession({ snapshot: makeSnapshot() })}
+        paused={false}
+        selected={[0, 0]}
+        setSelected={setSelected}
+        firstFocusableCell={[0, 0]}
+        selectedValue={0}
+        cellClass={() => 'game-cell'}
+        automaticCandidates={false}
+      />,
+    );
+
+    const nextCell = screen.getByLabelText('Row 1, column 2, empty');
+    fireEvent.pointerDown(nextCell, { pointerType: 'mouse' });
+    expect(setSelected).toHaveBeenCalledWith([0, 1]);
+
+    setSelected.mockClear();
+    fireEvent.pointerDown(nextCell, { pointerType: 'touch' });
+    expect(setSelected).not.toHaveBeenCalled();
+    fireEvent.click(nextCell);
+    expect(setSelected).toHaveBeenCalledWith([0, 1]);
+  });
+
   it('gives the first open cell the roving tab stop and conceals a paused board', () => {
     render(
       <GameBoard

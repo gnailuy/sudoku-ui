@@ -59,6 +59,9 @@ export const GameBoard = ({
               aria-selected={isSelected}
               aria-label={`Row ${row + 1}, column ${column + 1}, ${cellContent}${pending ? ', checking' : ''}${invalid ? ', invalid' : ''}`}
               tabIndex={isFocusable ? 0 : -1}
+              onPointerDown={(event) => {
+                if (event.pointerType !== 'touch') setSelected([row, column]);
+              }}
               onFocus={() => setSelected([row, column])}
               onClick={() => setSelected([row, column])}
             >

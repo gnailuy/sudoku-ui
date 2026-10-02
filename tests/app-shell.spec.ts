@@ -43,6 +43,7 @@ const mockGameApi = async (
     value?: number;
     values?: number[];
   }> = [];
+  const actionTargets: Array<{ row?: number; column?: number }> = [];
   const expectedRevisions: number[] = [];
   let adoptionPreviousNotes: number[][][] | undefined;
   let adoptionNotes: number[][][] | undefined;
@@ -148,6 +149,7 @@ const mockGameApi = async (
       ...(action.value === undefined ? {} : { value: action.value }),
       ...(action.values === undefined ? {} : { values: action.values }),
     });
+    actionTargets.push({ row: action.row, column: action.column });
     if (action.kind === 'set-value' && action.row && action.column) {
       values[action.row - 1][action.column - 1] = action.value ?? 0;
       invalid[action.row - 1][action.column - 1] = nextValueIsInvalid;
@@ -238,6 +240,7 @@ const mockGameApi = async (
     actionRequests: () => actionRequests,
     completedActions: () => completedActions,
     actions: () => actions,
+    actionTargets: () => actionTargets,
     expectedRevisions: () => expectedRevisions,
     sessionRequests: () => sessionRequests,
     requestedDifficulties: () => requestedDifficulties,
@@ -1812,4 +1815,58 @@ test('moves rapid click-and-keyboard input away from an invalid cell', async ({
   await expect(
     page.getByRole('gridcell', { name: 'Row 1, column 4, 2, invalid' }),
   ).toHaveAttribute('aria-selected', 'true');
+});
+
+test('keeps normal-paced mouse and keyboard input on each newly clicked cell', async ({
+  page,
+}, testInfo) => {
+  const api = await mockGameApi(page);
+  api.setActionDelay(350);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Play Easy' }).click();
+
+  const entries = [
+    { row: 1, column: 1, value: 1 },
+    { row: 1, column: 4, value: 2 },
+    { row: 1, column: 6, value: 3 },
+    { row: 1, column: 8, value: 4 },
+  ];
+
+  for (const [index, entry] of entries.entries()) {
+    const cell = page.getByRole('gridcell', {
+      name: `Row ${entry.row}, column ${entry.column}, empty`,
+    });
+    if (index === 1) {
+      await cell.dispatchEvent('pointerdown', {
+        pointerType: 'mouse',
+        buttons: 1,
+      });
+      await expect(cell).toHaveAttribute('aria-selected', 'true');
+      await page.waitForTimeout(200);
+    }
+    await cell.click();
+    await expect(cell).toBeFocused();
+    await page.waitForTimeout(200);
+    await page.keyboard.press(String(entry.value));
+    await page.waitForTimeout(200);
+  }
+
+  await expect.poll(() => api.completedActions()).toBe(entries.length);
+  expect(api.actions()).toEqual(
+    entries.map(({ value }) => ({ kind: 'set-value', value })),
+  );
+  expect(api.actionTargets()).toEqual(
+    entries.map(({ row, column }) => ({ row, column })),
+  );
+  await page.screenshot({
+    path: process.env.SCREENSHOT_DIR
+      ? `${process.env.SCREENSHOT_DIR}/screenshot-normal-paced-selection.png`
+      : testInfo.outputPath('normal-paced-selection.png'),
+    fullPage: true,
+  });
+  await expect(
+    page.getByRole('gridcell', {
+      name: 'Row 1, column 8, 4, invalid',
+    }),
+  ).toBeFocused();
 });
