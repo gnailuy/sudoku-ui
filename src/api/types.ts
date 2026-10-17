@@ -7,13 +7,7 @@ export type DigitSetGrid = Digit[][][];
 
 export type HintStepKind = 'observe' | 'compare' | 'eliminate' | 'conclude';
 export type HintRole =
-  | 'focus'
-  | 'premise'
-  | 'eliminated'
-  | 'conclusion'
-  | 'problem'
-  | 'missing'
-  | 'extra';
+  'focus' | 'premise' | 'eliminated' | 'conclusion' | 'problem' | 'extra';
 export type HintTargetKind = 'cell' | 'candidate' | 'row' | 'column' | 'box';
 export type HintLinkKind = 'strong' | 'weak' | 'implication';
 

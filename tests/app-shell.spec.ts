@@ -165,9 +165,22 @@ const mockGameApi = async (
             ],
           },
           {
+            id: 'compare-candidate-cell',
+            kind: 'compare',
+            message:
+              'Discard this cell’s deductions and rebuild them from row, column, and box values.',
+            marks: [
+              {
+                target: { kind: 'candidate', row: 1, column: 1, value: 3 },
+                role: 'extra',
+              },
+            ],
+          },
+          {
             id: 'set-candidate-cell',
             kind: 'conclude',
-            message: 'Keep candidates 1 and 8.',
+            message:
+              'Reset candidates to every locally allowed digit: 1 and 8.',
             marks: [
               {
                 target: { kind: 'candidate', row: 1, column: 1, value: 1 },
@@ -2135,7 +2148,19 @@ test('corrects the exact candidate cell before presenting a strategy', async ({
     }),
   ).toBeVisible();
 
+  await expect(page.getByText(/solution|required candidate/i)).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
+  await expect(page.getByText(/discard this cell’s deductions/i)).toBeVisible();
+  await page.getByRole('button', { name: 'Next' }).click();
+  await expect(
+    page.getByText(/every locally allowed digit: 1 and 8/i),
+  ).toBeVisible();
+  await page.screenshot({
+    path: process.env.SCREENSHOT_DIR
+      ? `${process.env.SCREENSHOT_DIR}/candidate-cell-reset.png`
+      : undefined,
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Apply hint' }).click();
   await expect(page.locator('.game-status')).toHaveCount(0);
   await expect(

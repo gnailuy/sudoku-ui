@@ -127,7 +127,6 @@ const roleLabel: Record<HintRole, string> = {
   eliminated: 'candidate eliminated',
   conclusion: 'hint conclusion',
   problem: 'needs correction',
-  missing: 'missing candidate',
   extra: 'impossible candidate',
 };
 
