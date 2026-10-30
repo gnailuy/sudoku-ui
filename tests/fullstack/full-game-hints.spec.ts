@@ -45,10 +45,11 @@ test('solves the real-stack fixture corpus and covers every strategy', async ({
       const panel = page.locator('.hint-panel');
       await expect(panel.getByRole('heading', { name: 'Hint' })).toBeVisible();
       await expect(panel.locator('.hint-strategy-reveal')).toHaveCount(0);
-      while (await panel.getByRole('button', { name: 'Next' }).isVisible()) {
-        await panel
-          .getByRole('button', { name: 'Next' })
-          .click({ force: true });
+      const next = panel.getByRole('button', { name: 'Next' });
+      const apply = panel.getByRole('button', { name: 'Apply hint' });
+      while (!(await apply.isVisible())) {
+        await expect(next).toBeVisible();
+        await next.click({ force: true });
       }
       const strategyHeading = panel.locator('.hint-strategy-name');
       const strategyGrade = panel.locator('.hint-strategy-grade');
