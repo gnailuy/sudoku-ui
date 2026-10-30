@@ -2190,9 +2190,8 @@ test('names and locks delayed hint and replay transactions', async ({
       : testInfo.outputPath('preparing-hint.png'),
     fullPage: true,
   });
-  await expect(
-    page.getByRole('heading', { name: 'Hidden single' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Next' }).click();
   api.setActionDelay(700);
@@ -2426,23 +2425,16 @@ test('teaches a complete hint locally and applies the exact previewed plan', asy
     .boundingBox();
   const siteHeaderBeforeHint = await page.locator('.site-header').boundingBox();
   await page.keyboard.press('h');
-  await expect(page.getByText('Hint', { exact: true })).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Hidden single' }),
-  ).toBeVisible();
-  await expect(page.getByText('Easy strategy')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.getByText('Hidden single', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('Easy strategy')).toHaveCount(0);
   await page.keyboard.press('Escape');
-  await expect(
-    page.getByRole('heading', { name: 'Hidden single' }),
-  ).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Hint' })).toHaveCount(0);
   await expect(
     page.getByRole('button', { name: 'Candidates on' }),
   ).toHaveAttribute('aria-pressed', 'true');
   await page.keyboard.press('h');
   await expect(page.getByText('Step 1 of 2')).toBeVisible();
-  const hintHeaderBefore = await page
-    .locator('.hint-panel__heading')
-    .boundingBox();
   await expect(
     page.getByText(
       'Check the highlighted cells, candidates, rows, columns, and boxes.',
@@ -2499,17 +2491,22 @@ test('teaches a complete hint locally and applies the exact previewed plan', asy
   await expect(page.locator('.hint-strategy-reveal')).toContainText(
     'Easy strategy',
   );
-  expect(await page.locator('.hint-panel__heading').boundingBox()).toEqual(
-    hintHeaderBefore,
-  );
   await expect(
     page.getByLabel(/Row 1, column 1, empty, candidates .*hint conclusion/),
   ).toHaveClass(/game-cell--hint-conclusion/);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Back' }).click();
   await expect(page.getByText('Step 1 of 2')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByText('Step 2 of 2')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Hidden single' }),
+  ).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toContainText(
+    'Easy strategy',
+  );
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -2743,13 +2740,11 @@ test('applies a Naked Pair to the authoritative candidate grid', async ({
   ).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Reveal a hint' }).click();
-  await expect(page.locator('.hint-strategy-reveal')).toContainText(
-    'Medium strategy',
-  );
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
-  await expect(page.locator('.hint-strategy-reveal')).toContainText(
-    'Medium strategy',
-  );
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByRole('heading', { name: 'Naked pair' })).toBeVisible();
   await expect(page.locator('.hint-strategy-reveal')).toContainText(
@@ -2834,10 +2829,11 @@ test('closes a consumed hint instead of refreshing the same plan forever', async
     }),
   ).toContainText('6');
   await page.getByRole('button', { name: 'Reveal a hint' }).click();
-  await expect(page.locator('.hint-strategy-reveal')).toContainText(
-    'Medium strategy',
-  );
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
+  await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+  await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
   await page.getByRole('button', { name: 'Next' }).click();
   await expect(page.getByRole('heading', { name: 'Naked pair' })).toBeVisible();
   await expect(page.locator('.hint-strategy-reveal')).toContainText(

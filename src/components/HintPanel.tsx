@@ -173,6 +173,11 @@ export const HintPanel = ({
     step.nodes.some(({ order }) => order) && formatMessage('hint.legend.order'),
   ].filter(Boolean) as string[];
   const title = descriptorText(hint.title, formatReference);
+  const showStrategy = hint.kind === 'strategy' && finalStep;
+  const heading =
+    hint.kind === 'strategy' && !showStrategy
+      ? formatMessage('hint.label')
+      : title;
   const gradeName = hint.strategy
     ? descriptorText(hint.strategy.grade_name, formatReference)
     : undefined;
@@ -188,16 +193,20 @@ export const HintPanel = ({
     <section
       className="hint-panel"
       aria-labelledby="hint-title"
-      aria-description={summary}
+      aria-description={
+        hint.kind !== 'strategy' || finalStep ? summary : undefined
+      }
       aria-busy={operation !== undefined}
     >
       <div className="hint-panel__heading">
         <div>
-          <p className="eyebrow">{formatMessage('hint.label')}</p>
+          {hint.kind !== 'strategy' && (
+            <p className="eyebrow">{formatMessage('hint.label')}</p>
+          )}
           <h2 id="hint-title" className="hint-strategy-name">
-            {title}
+            {heading}
           </h2>
-          {hint.strategy && (
+          {showStrategy && hint.strategy && (
             <div
               className="hint-strategy-reveal"
               role="group"

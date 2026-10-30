@@ -128,14 +128,11 @@ for (const hintCase of fixture.cases) {
     await page.getByRole('button', { name: 'Start Easy puzzle' }).click();
     await page.getByRole('button', { name: 'Reveal a hint' }).click();
 
+    await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: hintCase.display_name }),
-    ).toBeVisible();
-    await expect(
-      page
-        .locator('.hint-strategy-reveal')
-        .getByText(`${hintCase.grade} strategy`, { exact: false }),
-    ).toBeVisible();
+      page.getByText(hintCase.display_name, { exact: true }),
+    ).toHaveCount(0);
+    await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
 
     for (const [index, step] of hintCase.hint.steps.entries()) {
       const finalStep = index === hintCase.hint.steps.length - 1;
@@ -158,11 +155,22 @@ for (const hintCase of fixture.cases) {
       await expect(
         page.locator('.hint-step .hint-narration--fallback'),
       ).toHaveCount(0);
-      await expect(
-        page
-          .locator('.hint-strategy-reveal')
-          .getByText(`${hintCase.grade} strategy`, { exact: false }),
-      ).toBeVisible();
+      if (finalStep) {
+        await expect(
+          page.getByRole('heading', { name: hintCase.display_name }),
+        ).toBeVisible();
+        await expect(
+          page
+            .locator('.hint-strategy-reveal')
+            .getByText(`${hintCase.grade} strategy`, { exact: false }),
+        ).toBeVisible();
+      } else {
+        await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+        await expect(
+          page.getByText(hintCase.display_name, { exact: true }),
+        ).toHaveCount(0);
+        await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
+      }
       if (step.links.length > 0) {
         await expect(page.locator('.hint-link')).toHaveCount(step.links.length);
         await expect(
@@ -536,6 +544,19 @@ for (const hintCase of fixture.cases) {
       if (index < hintCase.hint.steps.length - 1) {
         await page.getByRole('button', { name: 'Next' }).click();
       }
+    }
+
+    if (hintCase.hint.steps.length > 1) {
+      await page.getByRole('button', { name: 'Back' }).click();
+      await expect(page.getByRole('heading', { name: 'Hint' })).toBeVisible();
+      await expect(
+        page.getByText(hintCase.display_name, { exact: true }),
+      ).toHaveCount(0);
+      await expect(page.locator('.hint-strategy-reveal')).toHaveCount(0);
+      await page.getByRole('button', { name: 'Next' }).click();
+      await expect(
+        page.getByRole('heading', { name: hintCase.display_name }),
+      ).toBeVisible();
     }
 
     await page.getByRole('button', { name: 'Apply hint' }).click();
