@@ -1,0 +1,266 @@
+/* Renderer-neutral teaching hints */
+.game-cell--hint-focus {
+  box-shadow: inset 0 0 0 2px var(--status-checking);
+}
+
+.game-cell--hint-premise {
+  background-image: linear-gradient(
+    135deg,
+    transparent 0 43%,
+    color-mix(in srgb, var(--accent) 20%, transparent) 43% 57%,
+    transparent 57%
+  );
+}
+
+.game-cell--hint-eliminated,
+.game-cell--hint-problem,
+.game-cell--hint-extra {
+  box-shadow: inset 0 0 0 2px var(--cell-invalid-ink);
+}
+
+.game-cell--hint-conclusion {
+  z-index: 2;
+  box-shadow:
+    inset 0 0 0 3px var(--accent),
+    inset 0 0 0 6px var(--cell-surface);
+}
+
+.cell-note--hint-focus,
+.cell-note--hint-premise,
+.cell-note--hint-conclusion {
+  border-radius: 50%;
+  outline: 1px solid currentColor;
+  outline-offset: -1px;
+  font-weight: 900;
+}
+
+.cell-note--hint-eliminated,
+.cell-note--hint-extra {
+  color: var(--cell-invalid-ink);
+  font-weight: 900;
+  text-decoration: line-through 2px;
+}
+
+.hint-panel {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.hint-panel__heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hint-panel .eyebrow,
+.hint-panel h2,
+.hint-panel p {
+  margin: 0;
+}
+
+.hint-panel h2 {
+  font: 700 1.2rem/1.15 var(--display);
+  overflow-wrap: anywhere;
+}
+
+.hint-strategy-reveal {
+  margin-top: 8px;
+  padding-left: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.hint-strategy-name {
+  font: 700 0.88rem/1.2 var(--display);
+}
+
+.hint-strategy-grade {
+  margin-top: 3px !important;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hint-close {
+  padding: 4px 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.hint-step {
+  display: grid;
+  gap: 5px;
+  min-height: 72px;
+  padding: 10px;
+  border-left: 3px solid var(--accent);
+  background: var(--paper);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.hint-step__count {
+  color: var(--muted);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hint-navigation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.hint-navigation button {
+  min-height: 38px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.hint-navigation .primary-action {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Explicit visual relationships for the current hint scene contract. */
+.board-stage {
+  position: relative;
+}
+
+.hint-scene {
+  position: absolute;
+  z-index: 4;
+  inset: calc(var(--board-stage-padding) + 3px);
+  width: calc(100% - 2 * (var(--board-stage-padding) + 3px));
+  height: calc(100% - 2 * (var(--board-stage-padding) + 3px));
+  overflow: visible;
+  pointer-events: none;
+  color: var(--accent);
+}
+
+.hint-link {
+  stroke: currentColor;
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+
+.hint-link--weak {
+  stroke-dasharray: 0.12 0.09;
+}
+
+.hint-link--implication {
+  marker-end: url(#hint-arrow);
+}
+
+#hint-arrow path {
+  fill: var(--accent);
+}
+
+.hint-node text {
+  fill: var(--ink);
+  font-family: var(--body);
+  font-size: 0.22px;
+  font-weight: 700;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 0.04;
+}
+
+.hint-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hint-legend li {
+  padding: 3px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.hint-narration__target {
+  white-space: normal;
+}
+
+.hint-narration__locator {
+  display: inline-block;
+  margin-inline-start: 0.2rem;
+  padding: 0.08rem 0.35rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.hint-narration__digit {
+  font-weight: 700;
+}
+
+.hint-narration__accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hint-panel--progress {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  min-height: 150px;
+}
+
+.hint-panel--progress > div {
+  display: grid;
+  gap: 6px;
+}
+
+.hint-transaction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.loading-mark--inline {
+  width: 20px;
+  border-width: 2px;
+  flex: 0 0 auto;
+}

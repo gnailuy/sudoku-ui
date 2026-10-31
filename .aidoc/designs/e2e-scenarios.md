@@ -2,7 +2,11 @@
 domain: Designs
 status: Active
 entry_points:
-  - tests/app-shell.spec.ts
+  - tests/app-shell-account-completion.spec.ts
+  - tests/app-shell-hints.spec.ts
+  - tests/app-shell-input-transactions.spec.ts
+  - tests/app-shell-responsive-navigation.spec.ts
+  - tests/app-shell-welcome-gameplay.spec.ts
 dependencies:
   - .aidoc/architecture/web-client.md
   - .aidoc/designs/game-experience.md
@@ -117,7 +121,7 @@ the last confirmed record and offers a retry. Starting another puzzle replaces r
 accumulates guest records; leaving clears only the one guest record. No identity, application
 session, provider token, or editable authoritative game JSON enters browser-readable storage.
 
-**Automation:** `tests/app-shell.spec.ts` covers creation, ordered action replacement, refresh
+**Automation:** `tests/app-shell-*.spec.ts` covers creation, ordered action replacement, refresh
 recovery, failure retention, replacement, and deletion; storage assertions inspect the fixed
 IndexedDB record directly.
 
@@ -155,8 +159,8 @@ per-game or bulk deletion, sign out, session revocation, and account deletion us
 without copying identity, request-proof values, or account game contents into localStorage,
 sessionStorage, or IndexedDB.
 
-**Automation:** `tests/app-shell.spec.ts` proves the successful automatic-claim boundary and
-fixed-record deletion; `src/hooks/useSessionLifecycle.test.ts` covers retained retries and the
+**Automation:** `tests/app-shell-*.spec.ts` proves the successful automatic-claim boundary and
+fixed-record deletion; `src/hooks/useSessionLifecycle.*.test.ts` covers retained retries and the
 account-game lifecycle; `src/components/AccountPanel.test.tsx` covers account controls.
 
 ## Start a Game
@@ -201,7 +205,7 @@ the board and cells square, prevents board/control overlap and horizontal overfl
 candidate-note rows inside each cell, and centers any height-constrained desktop board within the
 layout track to the left of the controls.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Theme Preference and State Coverage
 
@@ -217,7 +221,7 @@ retain the same precedence and non-color cues. The compact pressed-state appeara
 keyboard and screen-reader accessible at phone widths. Healthy service state adds no technical
 status copy to the header; connection progress or failure appears only when it affects play.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Enter Values and Notes
 
@@ -246,7 +250,7 @@ unchanged, refresh restores it from the active API session, and a newly created 
 zero. A digit shown nine non-invalid times in the authoritative snapshot disables its number-pad
 button, and keyboard entry cannot bypass that guard.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## One Candidate Grid with Cell-Level Visibility
 
@@ -263,7 +267,7 @@ visibility. Refresh restores the per-game visibility mask, while a new or restar
 it. A successful hint preview turns Candidates on and leaves the grid visible after close or apply.
 Undo and Redo restore only authoritative values and candidate sets, not the browser mask.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Stable Board Geometry and State Precedence
 
@@ -286,7 +290,7 @@ cell is never also styled as a peer or match, peer highlighting remains observab
 committed values and candidate notes use a quiet circular digit halo rather than a competing fill,
 and an empty selected cell produces no matches.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Interaction Paths
 
@@ -357,8 +361,8 @@ strategies. This lane proves React transport, sealed guest documents, revisions,
 application, progression, and solved completion without replacing the fast fixture matrix.
 
 **Automation:** `tests/hint-strategy-matrix.spec.ts`, `tests/fullstack/full-game-hints.spec.ts`,
-`playwright.fullstack.config.ts`, `tests/app-shell.spec.ts`, `src/components/HintPanel.test.tsx`,
-`src/components/GameBoard.test.tsx`, `src/hooks/useSessionLifecycle.test.ts`, and
+`playwright.fullstack.config.ts`, `tests/app-shell-*.spec.ts`, `src/components/HintPanel.test.tsx`,
+`src/components/GameBoard.test.tsx`, `src/hooks/useSessionLifecycle.*.test.ts`, and
 `src/api/client.test.ts`.
 
 ## Serialized Action Responsiveness
@@ -379,7 +383,7 @@ confirmed board, releases the history lock, and offers the existing retry. The e
 continues independently, a revision conflict reloads the authoritative board, and ordinary
 optimistic input paths retain their existing behavior.
 
-**Automation:** `tests/app-shell.spec.ts` and `src/hooks/useSessionLifecycle.test.ts`.
+**Automation:** `tests/app-shell-*.spec.ts` and `src/hooks/useSessionLifecycle.*.test.ts`.
 
 ## Pause, Time, and Refresh Recovery
 
@@ -393,7 +397,7 @@ pause state. Pause conceals the board and stops the timer. Refresh shows a neutr
 instead of flashing the welcome surface, reloads the opaque active session from the API, preserves
 paused timer state, and shows the restored authoritative board after resume.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Service Failure and Retry
 
@@ -404,7 +408,7 @@ then use the offered retry.
 and the named retry sends the move again. Revision-conflict recovery continues to reload the
 authoritative session rather than replay stale state.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ## Leave, Replay, and Different Puzzle Confirmation
 
@@ -433,7 +437,7 @@ treatment, with level selection as quiet navigation. Play a different puzzle cre
 session at the selected difficulty; while that request is pending, a named loading state replaces
 the stale board and controls, and the new board appears only after the API response.
 
-**Automation:** `scripts/check-deployment.mjs` and `tests/app-shell.spec.ts`.
+**Automation:** `scripts/check-deployment.mjs` and `tests/app-shell-*.spec.ts`.
 
 ## Solved Completion
 
@@ -445,7 +449,7 @@ cue and accessible name communicate the solved time. The completion panel preser
 and offers direct actions to start another board at the same level or return to level selection
 without an unnecessary confirmation.
 
-**Automation:** `tests/app-shell.spec.ts`.
+**Automation:** `tests/app-shell-*.spec.ts`.
 
 ### Input-method gameplay state matrix
 
