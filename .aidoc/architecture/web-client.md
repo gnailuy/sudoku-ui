@@ -13,7 +13,8 @@ dependencies:
 
 # Web Client Architecture
 
-The React client presents Sudoku sessions owned by the Go HTTP API. A strict ownership boundary prevents stale browser logic from disagreeing with authoritative revisions, validation, or recovery.
+The React client presents Sudoku sessions owned by the Go HTTP API. A strict ownership boundary
+prevents stale browser logic from disagreeing with authoritative revisions, validation, or recovery.
 
 ## Related Docs
 
@@ -27,61 +28,139 @@ The React client presents Sudoku sessions owned by the Go HTTP API. A strict own
 
 ## Why the Boundary Exists
 
-The Go engine already defines valid actions, optimistic revisions, hints, history, candidates, and durable recovery. Reimplementing those rules in React would create two game engines and make refresh, concurrency, and backend upgrades unsafe.
+The Go engine already defines valid actions, optimistic revisions, hints, history, candidates, and
+durable recovery. Reimplementing those rules in React would create two game engines and make
+refresh, concurrency, and backend upgrades unsafe.
 
-The browser owns only presentation concerns such as selection, keyboard focus, pause visibility, elapsed-time display, theme, and preferences. The level picker remains a preferred request, while every active-game label and persisted timer presentation uses `session.actual_difficulty` from the API. The API snapshot owns the cumulative confirmed mistake count, so refresh and recovery cannot disagree with the game session. Theme preference is persisted as `system`, `light`, or `dark`; System follows `prefers-color-scheme` changes, while the resolved theme selects one complete semantic token set for every surface and gameplay state. Candidates remain one API-authoritative grid. Candidates controls only an 81-cell browser-owned visibility mask, while Notes controls whether digit input edits that grid or places values. Candidates on reveals every editable cell, Candidates off hides every cell, and editing a hidden cell reveals only that cell. The browser never copies, derives, or reconciles a second note model. A small local active-game record stores either the opaque account-game ID or the browser-local guest ID together with timer presentation state, so refresh can select the matching authoritative or sealed record again; it never stores puzzle values or history.
+The browser owns only presentation concerns such as selection, keyboard focus, pause visibility,
+elapsed-time display, theme, and preferences. The level picker remains a preferred request, while
+every active-game label and persisted timer presentation uses `session.actual_difficulty` from the
+API. The API snapshot owns the cumulative confirmed mistake count, so refresh and recovery cannot
+disagree with the game session. Theme preference is persisted as `system`, `light`, or `dark`;
+System follows `prefers-color-scheme` changes, while the resolved theme selects one complete
+semantic token set for every surface and gameplay state. Candidates remain one API-authoritative
+grid. Candidates controls only an 81-cell browser-owned visibility mask, while Notes controls
+whether digit input edits that grid or places values. Candidates on reveals every editable cell,
+Candidates off hides every cell, and editing a hidden cell reveals only that cell. The browser never
+copies, derives, or reconciles a second note model. A small local active-game record stores either
+the opaque account-game ID or the browser-local guest ID together with timer presentation state, so
+refresh can select the matching authoritative or sealed record again; it never stores puzzle values
+or history.
 
 ## What the Client Contains
 
-`SudokuApiClient` is the narrow transport boundary. Its request and response types mirror the canonical OpenAPI 3.1.1 contract in `gnailuy/sudoku/api/openapi.yaml`; transport failures become `SudokuApiError` values rather than leaking fetch details through the component tree. The account transport keeps application cookies same-origin, supplies the current account's request-proof token only on authenticated mutations, encodes account-game identifiers, and models guest actions as sealed-document replacement.
+### Transport and localization
 
-The localization boundary under `src/i18n/` owns one typed catalog for all browser-authored visible and assistive messages. Browser controllers retain message IDs and typed values rather than rendered English, so switching locale rerenders in-place status and retry state without touching the game. API-authored descriptors are validated as complete closed unions before catalog formatting: known valid IDs ignore fallback prose, unknown valid IDs display the bounded English fallback, and malformed descriptors become the localized generic failure. Singular argument kinds retain scalar cardinality, while grouped `digits`, `cells`, `candidates`, and `units` arguments retain ordered non-empty collections; the browser formats those collections with the active locale's list rules before interpolating the complete message. Locale never enters gameplay requests or authoritative storage.
+`SudokuApiClient` is the narrow transport boundary. Its types mirror the canonical OpenAPI contract,
+normalize transport failures as `SudokuApiError`, keep authenticated cookies same-origin, attach
+request-proof tokens only to account mutations, and model guest actions as sealed-document
+replacement.
 
-`SudokuApiClient` requests read-only complete hint previews through the active guest or account-game resource. A successful preview turns Candidates on before rendering the typed candidate facts required by its current step and leaves the authoritative grid visible after close or apply. `App` keeps one preview and current step as disposable state: correction plans use their correction title without strategy metadata, while strategy plans use a neutral Hint heading until the final action step reveals their name and grade; returning to an earlier step hides that metadata again. Back and Next stay local, `GameBoard` renders typed problem/extra or strategy roles, and Apply submits the exact `plan_id`. `HintPanel` renders summary, step, and narration message descriptors through the selected catalog. Narration remains a closed message, digit, or target union; targets become direct highlighted references with visible compact locators and complete screen-reader locations. The browser neither parses English fallback nor derives reasoning from scenes, marks, or effects. While the preview is open, the hint panel replaces the inactive number pad, tools, and shortcut disclosure so the control column cannot grow or move the board into the footer; board cells remain visible for evidence but reject pointer and keyboard selection. `H` opens a preview, advances an open preview, and applies it from the final step; Left and Right remain available for navigation, Enter still applies only on the final step, and Escape closes it. The same visible controls preserve the touch path. Every applied correction or strategy result returns the updated authoritative candidate grid; the browser does not translate effects into local mutations. A preview never enters IndexedDB or account storage. Any rejected or stale application discards dependent state and requests a fresh plan for the latest authoritative revision instead of applying or reconstructing hint logic in React.
+`src/i18n/` owns browser-authored messages and API descriptor rendering. Controllers retain message
+IDs and typed values rather than rendered English. Valid known descriptors use the selected catalog,
+valid unknown descriptors use bounded backend English, and malformed descriptors become a localized
+generic failure. Locale never enters gameplay requests or authoritative storage.
 
-`GuestGameRepository` is the browser persistence boundary for sealed guest play. The repository owns one fixed IndexedDB record containing schema version 1, a browser-local game identity, the latest complete sealed guest response, and timer presentation state. Replacement and deletion each complete in one read-write transaction; unsupported records fail explicitly instead of being interpreted as game state. The local identity scopes browser-only focus and the per-game candidate visibility mask without exposing the sealed document, while the persisted resume timestamp keeps elapsed presentation coherent across browser restarts.
+### Hint presentation
 
-`useSessionLifecycle` routes new games and ordered mutations through sealed guest endpoints until an account exists. Each successful response and its replacement document reach IndexedDB before the visible confirmed board advances; failed transport or storage retains the last complete record and exposes a retry. New-game creation exposes its requested difficulty as a typed pending state before transport begins, so the initiating welcome control can name and lock the exact request while a replacement keeps the stale board unavailable. New-game replacement writes the new record atomically, guest recovery loads only that record, and leaving clears only guest state. A serialized storage queue prevents timer persistence from overwriting a newer sealed action response.
+The API client requests one complete read-only plan from the active guest or account resource. `App`
+keeps the preview and current step as disposable state. `HintPanel` renders closed descriptors and
+narration; `GameBoard` renders typed marks, nodes, and links. The browser never parses fallback
+prose or derives reasoning from scenes.
 
-Startup also resolves the same-origin HttpOnly account session. When an account and local guest coexist, the controller immediately claims that one sealed document behind a named, non-interactive “Saving your puzzle to your account…” transition, retains IndexedDB through every failed or uncertain response, and clears it only after the authoritative account-game response succeeds. For an authenticated game, the browser stores only the active opaque game identifier and timer presentation pointer; refresh first confirms that identifier in the account's authoritative game list, then reloads the exact game route before showing the board. A stale or deleted identifier is discarded instead of selecting another game implicitly. Account creation, resume, ordered actions, listing, presentation-time synchronization, per-game or bulk deletion, logout, session revocation, and account deletion use the request-proof token returned by the current-account route. Saved-game and account mutations expose one typed browser-owned operation state so the initiating control names its exact pending action. A destructive confirmation remains modal, busy, and non-dismissible until the server confirms success; failure restores its action in the same dialog while retaining the last authoritative account state. The client synchronizes elapsed time every five active seconds and immediately on pause or completion; account summaries consume backend-owned status and elapsed time rather than reconstructing either from timestamps. Guest and account actions share one serialized intent boundary, but only guest mode writes sealed documents or gameplay presentation into IndexedDB.
+Navigation remains local. Application submits the exact `plan_id`, and every accepted correction or
+strategy result returns the updated authoritative grid. Preparing, refreshing, and applying a hint
+use explicit typed states that lock conflicting controls. Rejected or stale application requests a
+new plan for the latest revision instead of reconstructing logic in React.
 
-`App` is the composition root for cohesive welcome, loading, board, controls, completion, and confirmation presentations under `src/components/`. Focused controllers in `src/hooks/` own API session lifecycle, presentation time, and board input/navigation; shared browser-only records and formatting live in `src/presentation.ts`. These boundaries separate presentation responsibilities without introducing an independent game model.
+### Guest persistence and account transition
 
-Vitest component tests exercise each extracted presentation boundary through accessible roles, labels, state, and callbacks. Hook tests exercise session recovery and retry behavior, timing, keyboard routing, selection, and API-authoritative mutation decisions. CI measures every component, hook, and shared presentation helper independently and requires each file to retain at least 80% line, statement, and function coverage and 70% branch coverage. Black-box Playwright scenarios remain the authority for integrated browser behavior, responsive geometry, and backend interaction.
+`GuestGameRepository` owns one fixed IndexedDB record containing the browser identity, complete
+sealed guest response, and timer presentation state. Replacement and deletion are atomic.
+Unsupported records fail explicitly, and the browser never opens or edits sealed gameplay state.
 
-`useSessionLifecycle` is the only presentation controller that creates, restores, or mutates API sessions. It serializes user intents through one ordered pipeline, sends each action with the latest confirmed revision, and replaces the confirmed snapshot only with that action's response. Value entry and erase receive a temporary cell-local projection while queued; the projection is explicitly marked as checking and never predicts validity, candidates, peer cleanup, or history. Each authoritative response removes only its corresponding projection, so a later queued result cannot overwrite an earlier result. A conflict reloads the authoritative session, while a transport failure keeps the last confirmed board, offers a retry for the failed action, and discards dependent queued projections.
+`useSessionLifecycle` uses guest endpoints until an account exists. It advances the visible
+confirmed board only after a successful response and IndexedDB replacement. Automatic claim keeps
+the guest record through every uncertain or failed response and deletes it only after an
+authoritative account game returns.
 
-Hint preparation and exclusive gameplay transactions have explicit typed presentation states. Preparing or refreshing a hint keeps the confirmed board visible but makes it read-only, names the running request in the control surface, and locks conflicting controls. Applying a hint and same-puzzle restart reserve an exclusive boundary synchronously before React renders, so duplicate Enter/click activation, closing the hint, or ordinary gameplay input cannot queue behind the authoritative request.
+Authenticated play persists only one opaque active-game pointer and timer presentation state.
+Refresh verifies that pointer against the authoritative game list. Account mutations carry the
+current request-proof token, destructive operations expose one typed pending state, and elapsed time
+synchronizes at bounded intervals plus pause or completion.
 
-Same-puzzle replay is one serialized `restart` transaction within that pipeline. A dedicated “Restarting this puzzle…” surface replaces the stale interactive board until the authoritative replacement state arrives; the timer remains stopped during the decision and transaction. Success then closes any open hint, resets browser-only timer, selection, Notes, and Candidates presentation, and moves focus to the fresh board. A different-puzzle replacement also discards the prior puzzle’s open hint only after the new authoritative session succeeds. Account elapsed time resets in the same backend revision; guest presentation storage receives zero only after the sealed replacement succeeds.
+### Composition and authoritative mutation
 
-History navigation is a single-flight transition within that pipeline. The first Undo or Redo reserves the history boundary synchronously before React renders, so same-tick pointer, touch, or keyboard activations cannot enqueue a second history command. Both history controls remain unavailable and expose the active “Undoing…” or “Redoing…” state until the authoritative response succeeds or fails; the confirmed board stays visible, and the returned snapshot alone restores `can_undo` and `can_redo`. Ordinary value and candidate intents keep their immediate presentation and ordered transport behavior.
+`App` composes welcome, loading, board, controls, completion, and confirmations. Focused hooks own
+API lifecycle, presentation time, and input/navigation; `src/presentation.ts` contains shared
+browser-only records and formatting. No boundary introduces an independent game model.
 
-Candidate taps use a transient cell-local draft and debounce rapid edits into one complete `set-candidates` request. A hidden cell begins from an empty visible baseline and is revealed before its first edit; a visible cell begins from the complete displayed authoritative set. Input received while one request is in flight remains visible and is sent as the next complete set after the response; the global action pipeline still serializes these requests with values, hints, and history actions. Drafts and projections are never persisted and do not own revision, history, validation, or candidate semantics. `useGameTimer` and `useBoardNavigation` consume authoritative session snapshots but own only elapsed-time display, pending presentation, pause visibility, selection, focus, notes mode, and keyboard or pointer routing.
+`useSessionLifecycle` is the sole controller that creates, restores, or mutates sessions. It
+serializes intents, sends each action with the latest confirmed revision, and updates the snapshot
+only from that action's response. Temporary cell projections never predict validity, candidates,
+peers, or history. Conflict reloads authoritative state; failure keeps the last confirmed board and
+drops dependent projections.
 
-Input handling is split into three layers. `useBoardNavigation` defines device-independent commands and UX state transitions such as enter digit, erase, change mode, and move selection. Board cells commit mouse and pen selection at pointer press, before a possibly interrupted click, while focus and click remain keyboard and touch fallbacks. `ExactActivationButton` is a thin input adapter that normalizes control-button events into one semantic activation: mouse and keyboard use canonical click activation, while touch and pen commit on pointer release so a second quick tap does not wait for a delayed compatibility click. A touch-release fallback covers browsers that expose the touch stream but omit pointer-type metadata; recognized pointer releases consume that fallback so one gesture still activates exactly once. The adapter suppresses the first click in the short post-touch window unconditionally because mobile browsers can emit compatibility clicks with no pointer type, detail, or coordinates; CSS `touch-action: manipulation` also removes double-tap gesture ambiguity. `useSessionLifecycle` then serializes resulting gameplay actions independently of their input source. Device heuristics therefore cannot change Sudoku semantics, candidate drafting, revisions, or history.
+Hint application, restart, Undo, and Redo reserve exclusive or single-flight boundaries
+synchronously before React renders. Same-puzzle replay resets presentation state only after the
+authoritative restart succeeds. Different- puzzle replacement discards the old hint only after the
+new session succeeds.
+
+Candidate editing uses a transient cell-local draft and trailing-edge debounce. A hidden cell starts
+from an empty visible baseline; a visible cell starts from its displayed set. Input arriving during
+a request remains visible and becomes the next complete replacement. Drafts never own revisions,
+history, validation, or candidate semantics.
+
+### Input and presentation controllers
+
+`useBoardNavigation` defines device-independent commands and UX state. `ExactActivationButton`
+normalizes controls into one semantic activation: mouse and keyboard use canonical click; touch and
+pen commit on release and suppress the first compatibility click. Device heuristics never own Sudoku
+behavior.
+
+`useGameTimer` and `useBoardNavigation` consume authoritative snapshots while owning only elapsed
+display, pause visibility, selection, focus, modes, and input routing. Vitest proves focused
+components and hooks; Playwright remains the authority for integrated behavior, responsive geometry,
+and backend interaction.
 
 ## Invariants
 
-- Input adapters MUST emit semantic activations only; they MUST NOT own gameplay, note, candidate, revision, or history rules.
+- Input adapters MUST emit semantic activations only; they MUST NOT own gameplay, note, candidate,
+  revision, or history rules.
 - The HTTP API MUST remain authoritative for every puzzle and gameplay mutation.
-- Hint navigation MUST remain browser-local, while hint application MUST submit the exact API-issued `plan_id` for the previewed revision.
+- Hint navigation MUST remain browser-local, while hint application MUST submit the exact API-issued
+  `plan_id` for the previewed revision.
 - Hint marks MUST expose semantic roles through accessible text and non-color visual cues.
-- Every action MUST wait for earlier queued actions and include the latest confirmed session revision.
-- Hint application and same-puzzle restart MUST reserve one exclusive transaction synchronously; no later action may queue until it settles.
-- History navigation MUST admit at most one Undo or Redo until its authoritative response settles, and duplicate suppression MUST occur before the next render.
+- Every action MUST wait for earlier queued actions and include the latest confirmed session
+  revision.
+- Hint application and same-puzzle restart MUST reserve one exclusive transaction synchronously; no
+  later action may queue until it settles.
+- History navigation MUST admit at most one Undo or Redo until its authoritative response settles,
+  and duplicate suppression MUST occur before the next render.
 - Pending value presentation MUST be distinguishable from authoritative valid or invalid state.
-- A failed action MUST discard later dependent projections rather than replaying them against uncertain state.
+- A failed action MUST discard later dependent projections rather than replaying them against
+  uncertain state.
 - A revision conflict MUST reload authoritative session data before another mutation.
 - The browser MUST NOT persist an independent puzzle solution or gameplay history.
-- A guest action response MUST replace the complete IndexedDB record before its board becomes confirmed in the UI.
-- Automatic claim MUST retain the guest record until an authoritative account game is returned, and retries MUST reuse the same sealed document.
-- Account mutations MUST carry the current request-proof token and MUST NOT copy identity or account games into browser storage.
-- Timer persistence MUST serialize with sealed-document replacement so older presentation writes cannot restore older gameplay.
-- Candidate visibility MUST remain browser-owned presentation state scoped to one game; Candidates on reveals every editable cell, Candidates off clears the mask, and note entry may reveal only its edited cell.
-- Candidate edits MUST submit complete `set-candidates` replacements from the displayed baseline; the browser MAY project the pending cell but MUST NOT derive Sudoku candidates or create a second grid.
+- A guest action response MUST replace the complete IndexedDB record before its board becomes
+  confirmed in the UI.
+- Automatic claim MUST retain the guest record until an authoritative account game is returned, and
+  retries MUST reuse the same sealed document.
+- Account mutations MUST carry the current request-proof token and MUST NOT copy identity or account
+  games into browser storage.
+- Timer persistence MUST serialize with sealed-document replacement so older presentation writes
+  cannot restore older gameplay.
+- Candidate visibility MUST remain browser-owned presentation state scoped to one game; Candidates
+  on reveals every editable cell, Candidates off clears the mask, and note entry may reveal only its
+  edited cell.
+- Candidate edits MUST submit complete `set-candidates` replacements from the displayed baseline;
+  the browser MAY project the pending cell but MUST NOT derive Sudoku candidates or create a second
+  grid.
 - Same-origin `/api/*` routing MUST hide backend topology from browser code.
-- Refresh recovery MUST reload the saved opaque session from the API before showing either the welcome surface or a board.
-- Presentation time MUST run independently from API mutation lifecycle and MUST stop only for explicit pause, hidden-page suspension, confirmation decisions, or solved status.
-- Theme preference MUST remain browser-owned; both light and dark token sets MUST preserve state precedence, non-color cues, focus visibility, and native control color-scheme behavior.
+- Refresh recovery MUST reload the saved opaque session from the API before showing either the
+  welcome surface or a board.
+- Presentation time MUST run independently from API mutation lifecycle and MUST stop only for
+  explicit pause, hidden-page suspension, confirmation decisions, or solved status.
+- Theme preference MUST remain browser-owned; both light and dark token sets MUST preserve state
+  precedence, non-color cues, focus visibility, and native control color-scheme behavior.
 - Pausing MUST conceal the puzzle, stop presentation time, and leave API game state unchanged.
