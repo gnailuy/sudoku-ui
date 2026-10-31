@@ -278,6 +278,23 @@ describe('useSessionLifecycle account', () => {
     );
   });
 
+  it('offers and completes a retry when account deletion fails', async () => {
+    api.getCurrentAccount.mockResolvedValue(signedInAccount);
+    api.deleteCurrentAccount
+      .mockRejectedValueOnce(new Error('temporary deletion failure'))
+      .mockResolvedValueOnce(undefined);
+
+    const { result } = await readyHook();
+    await act(async () => void (await result.current.deleteAccount()));
+    expect(result.current.retryLabel).toEqual({ id: 'retry.deleteAccount' });
+
+    await act(async () => void (await result.current.retryAction.current()));
+    await waitFor(() =>
+      expect(api.deleteCurrentAccount).toHaveBeenCalledTimes(2),
+    );
+    expect(result.current.message).toEqual({ id: 'status.accountDeleted' });
+  });
+
   it('revokes all sessions and deletes the current account through confirmed controls', async () => {
     api.getCurrentAccount.mockResolvedValue(signedInAccount);
     api.revokeAccountSessions.mockResolvedValue(undefined);
