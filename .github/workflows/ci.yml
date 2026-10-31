@@ -18,6 +18,9 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm run lint
+      - name: Readability size review
+        continue-on-error: true
+        run: python3 scripts/review_size.py
       - run: npm run test:docs
       - run: npm run test:catalog
       - run: npm run test:contract

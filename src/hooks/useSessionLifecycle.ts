@@ -11,7 +11,6 @@ import type {
   GameState,
 } from '../api/types';
 import {
-  ACTIVE_GAME_KEY,
   DIFFICULTY_PREFERENCE_KEY,
   actionableError,
   readActiveGame,
@@ -30,74 +29,29 @@ import {
   type GuestGameRecord,
   type GuestPresentationState,
 } from '../storage/guestGameRepository';
+import type {
+  ActiveGameTransaction,
+  HintPreparation,
+  PendingAction,
+  QueuedAction,
+} from './sessionLifecycleTransactions';
+import {
+  activeGameFromAccount,
+  activeGameFromGuest,
+  clearActiveAccountGame,
+  createLocalId,
+  isSignedOut,
+  saveActiveAccountGame,
+  sessionFromAccountGame,
+  sessionFromGuest,
+  type GameMode,
+} from './sessionLifecycleRecords';
 
-export interface PendingAction {
-  sequence: number;
-  action: GameAction;
-}
-
-interface QueuedAction extends PendingAction {
-  gameKey: string;
-  resolve: (accepted: boolean) => void;
-}
-
-type GameMode = 'guest' | 'account';
-
-export type ActiveGameTransaction = 'applying-hint' | 'restarting-puzzle';
-export type HintPreparation = 'preparing-hint' | 'refreshing-hint';
-
-const sessionFromGuest = (record: GuestGameRecord): GameState => ({
-  id: record.local_id,
-  revision: record.game.revision,
-  actual_difficulty: record.game.actual_difficulty,
-  snapshot: record.game.snapshot,
-});
-
-const sessionFromAccountGame = (game: AccountGame): GameState => ({
-  id: game.id,
-  revision: game.revision,
-  actual_difficulty: game.actual_difficulty,
-  snapshot: game.snapshot,
-});
-
-const activeGameFromGuest = (record: GuestGameRecord): ActiveGameRecord => ({
-  sessionId: record.local_id,
-  difficulty: record.game.actual_difficulty,
-  elapsedSeconds: record.presentation.elapsed_seconds,
-  paused: record.presentation.paused,
-  resumedAt: record.presentation.resumed_at,
-});
-
-const activeGameFromAccount = (game: AccountGame): ActiveGameRecord => ({
-  sessionId: game.id,
-  difficulty: game.actual_difficulty,
-  elapsedSeconds: game.elapsed_seconds,
-  paused: false,
-});
-
-const createLocalId = () =>
-  globalThis.crypto?.randomUUID?.() ??
-  `guest-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-const isSignedOut = (error: unknown) =>
-  error instanceof SudokuApiError &&
-  (error.status === 401 || error.status === 403);
-
-const saveActiveAccountGame = (record: ActiveGameRecord) => {
-  try {
-    localStorage.setItem(ACTIVE_GAME_KEY, JSON.stringify(record));
-  } catch {
-    // Account recovery remains available from My games when storage is unavailable.
-  }
-};
-
-const clearActiveAccountGame = () => {
-  try {
-    localStorage.removeItem(ACTIVE_GAME_KEY);
-  } catch {
-    // Storage restrictions must not block account actions.
-  }
-};
+export type {
+  ActiveGameTransaction,
+  HintPreparation,
+  PendingAction,
+} from './sessionLifecycleTransactions';
 
 export const useSessionLifecycle = () => {
   const client = useMemo(() => new SudokuApiClient(), []);
