@@ -338,7 +338,7 @@ test('prefers the browser primary English locale over an installed Chinese langu
   );
 });
 
-test('shows complete menu names with a compact selected Portuguese label, distinguishes language Auto from theme System, and clears pointer focus', async ({
+test('shows compact Portuguese, distinct automatic controls, and clear pointer focus', async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
