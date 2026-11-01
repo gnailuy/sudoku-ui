@@ -392,8 +392,10 @@ for (const hintCase of fixture.cases) {
             document.querySelectorAll<SVGTextElement>('.hint-node text'),
           );
           return expectedNodes.map((expected, index) => {
+            const cell = `[data-cell="${expected.target.row - 1}-${expected.target.column - 1}"]`;
+            const note = `.cell-notes > span:nth-child(${expected.target.value})`;
             const candidate = document.querySelector<HTMLElement>(
-              `[data-cell="${expected.target.row - 1}-${expected.target.column - 1}"] .cell-notes > span:nth-child(${expected.target.value})`,
+              `${cell} ${note}`,
             );
             const digit =
               candidate?.querySelector<HTMLElement>('.cell-note__digit');

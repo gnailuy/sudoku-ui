@@ -13,3 +13,10 @@ Start with `.aidoc/INDEX.md` and follow its task-specific reading chains.
 - Before changing a reported regression, encode the reporter’s exact preconditions, action order, input method, and timing seam as a failing black-box journey; do not insert waits inside a reported rapid interaction burst.
 - Claim only the boundary actually proved: browser touch emulation is browser-level evidence, not physical-device verification. Assert both the visible result and the authoritative API action sequence.
 - Preserve keyboard access, visible focus, responsive layout, reduced-motion behavior, and color-independent state cues.
+
+## Readability Ratchet
+
+- Run `python3 scripts/review_size.py` before editing and again after the work is complete.
+- When the checker reports violations, inspect those in files you will touch and remove at least one nearby violation when the cleanup is safe and bounded. Do not count mechanical wrapping that makes the code harder to read as an improvement.
+- Never introduce or worsen a reported metric. Keep opportunistic cleanup within the touched file or its immediate owner; keep dedicated cleanup changes small and behavior-preserving rather than coupling unrelated refactors to urgent work.
+- If violations remain, report the before/after counts in the PR description, identify what was fixed, and explain why any applicable cleanup was not made. When the checker reports no violations, omit readability status from the PR description.
