@@ -1,6 +1,7 @@
 import { SudokuApiError } from './api/client';
 import type { Difficulty } from './api/types';
-import { sourceMessages, type MessageId } from './i18n/catalogs';
+import { sourceMessages } from './i18n/catalogs/en';
+import type { MessageId } from './i18n/catalogs/types';
 import { descriptorMessage } from './i18n/backendMessages';
 import {
   message,

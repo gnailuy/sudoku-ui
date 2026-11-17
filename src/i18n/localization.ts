@@ -1,7 +1,8 @@
 import { createContext, useContext } from 'react';
 import { createIntl, createIntlCache, type IntlShape } from 'react-intl';
 import type { Difficulty } from '../api/types';
-import { sourceMessages, type MessageId, type RuntimeLocale } from './catalogs';
+import { sourceMessages } from './catalogs/en';
+import type { MessageId, RuntimeLocale } from './catalogs/types';
 import type {
   DisplayMessage,
   MessageListReference,

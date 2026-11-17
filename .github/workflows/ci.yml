@@ -25,6 +25,7 @@ jobs:
       - run: npm run test:contract
       - run: npm run test:coverage
       - run: npm run build
+      - run: npm run test:bundle
       - run: npm run test:deployment
       - run: npm run test:release
   browser-e2e:

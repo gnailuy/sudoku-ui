@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   return {
     base: publicBasePath(env.SUDOKU_MOUNT_PATH),
+    build: { manifest: true },
     plugins: [react()],
     test: {
       setupFiles: ['./src/test/setup.ts'],

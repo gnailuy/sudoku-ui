@@ -13,6 +13,7 @@
     "test:coverage": "vitest run src --coverage",
     "test:catalog": "vitest run src/i18n/catalogs.test.ts src/i18n/backendMessages.test.ts",
     "test:contract": "vitest run src/i18n/backendHintContract.test.ts",
+    "test:bundle": "node scripts/check-locale-bundles.mjs",
     "test:docs": "python3 scripts/validate_aidoc.py && python3 -m unittest scripts/test_validate_aidoc.py",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

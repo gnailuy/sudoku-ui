@@ -414,7 +414,7 @@ test('centers the language label and chevron as one compact unit and keeps the G
 
 test('switches locale in place without gameplay requests or losing game, presentation, timer, focus, or hint step', async ({
   page,
-}) => {
+}, testInfo) => {
   const api = await mockLocalizedGameApi(page);
   await page.goto('/');
   await page.locator('.welcome .primary-action').click();
@@ -467,6 +467,10 @@ test('switches locale in place without gameplay requests or losing game, present
     page.locator('.tool-group--modes button').nth(1),
   ).toHaveAttribute('aria-pressed', 'true');
   expect(requestCounts).toEqual({ games: 1, hints: 1, actions: 0 });
+  await page.screenshot({
+    path: screenshotPath(testInfo, 'locale-switch-preserves-game.png'),
+    fullPage: true,
+  });
 });
 
 const visualLocales = [

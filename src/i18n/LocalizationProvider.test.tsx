@@ -30,7 +30,7 @@ afterEach(() => {
 });
 
 describe('LocalizationProvider', () => {
-  it('rerenders typed message references in the selected catalog', () => {
+  it('rerenders typed message references after loading the selected catalog', async () => {
     const view = render(
       <LocalizationProvider locale="en">
         <Probe />
@@ -45,7 +45,7 @@ describe('LocalizationProvider', () => {
         <Probe />
       </LocalizationProvider>,
     );
-    expect(screen.getByText('語言已變更為中文。')).toBeInTheDocument();
+    expect(await screen.findByText('語言已變更為中文。')).toBeInTheDocument();
     expect(screen.getByText('無法完成要求。')).toBeInTheDocument();
     expect(document.documentElement.lang).toBe('zh-Hant');
     expect(document.documentElement.dir).toBe('ltr');
@@ -55,6 +55,7 @@ describe('LocalizationProvider', () => {
         <Probe />
       </LocalizationProvider>,
     );
+    expect(await screen.findByText('لا يمكن إكمال الطلب.')).toBeInTheDocument();
     expect(document.documentElement.lang).toBe('ar');
     expect(document.documentElement.dir).toBe('rtl');
   });

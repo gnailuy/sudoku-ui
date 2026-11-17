@@ -1,6 +1,9 @@
 import { IntlProvider, createIntl } from 'react-intl';
-import { useEffect, useMemo, type ReactNode } from 'react';
-import { catalogs, type RuntimeLocale } from './catalogs';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { sourceMessages } from './catalogs/en';
+import type { RuntimeLocale } from './catalogs/types';
+import { loadCatalog } from './catalogs/loadCatalog';
+import type { IntlMessageCatalog } from './catalogs/types';
 import { intlCache, LocalizationContext } from './localization';
 
 const localeMetadata: Record<
@@ -43,14 +46,40 @@ export function LocalizationProvider({
   locale,
   children,
 }: LocalizationProviderProps) {
-  const metadata = localeMetadata[locale];
+  const [loadedCatalog, setLoadedCatalog] = useState<{
+    locale: RuntimeLocale;
+    messages: IntlMessageCatalog;
+  }>({ locale: 'en', messages: sourceMessages });
+
+  useEffect(() => {
+    if (loadedCatalog.locale === locale) return;
+
+    let current = true;
+    void loadCatalog(locale).then(
+      (messages) => {
+        if (current) setLoadedCatalog({ locale, messages });
+      },
+      () => {
+        // Keep the current complete catalog when a chunk cannot be loaded.
+      },
+    );
+    return () => {
+      current = false;
+    };
+  }, [loadedCatalog.locale, locale]);
+
+  const metadata = localeMetadata[loadedCatalog.locale];
   const intl = useMemo(
     () =>
       createIntl(
-        { locale, defaultLocale: 'en', messages: catalogs[locale] },
+        {
+          locale: loadedCatalog.locale,
+          defaultLocale: 'en',
+          messages: loadedCatalog.messages,
+        },
         intlCache,
       ),
-    [locale],
+    [loadedCatalog],
   );
 
   useEffect(() => {
@@ -59,11 +88,13 @@ export function LocalizationProvider({
   }, [metadata.dir, metadata.lang]);
 
   return (
-    <LocalizationContext.Provider value={{ locale, intl }}>
+    <LocalizationContext.Provider
+      value={{ locale: loadedCatalog.locale, intl }}
+    >
       <IntlProvider
-        locale={locale}
+        locale={loadedCatalog.locale}
         defaultLocale="en"
-        messages={catalogs[locale]}
+        messages={loadedCatalog.messages}
       >
         {children}
       </IntlProvider>

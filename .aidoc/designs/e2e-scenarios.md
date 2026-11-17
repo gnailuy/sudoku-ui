@@ -52,7 +52,7 @@ time, presentation modes, current hint step, document metadata, and desktop/phon
 representative welcome, game, and hint surfaces for every production locale and the development-only
 pseudo-locale.
 
-**Expected:** Every production choice renders a complete catalog, persists as the versioned global
+**Expected:** Every production choice loads only its content-hashed catalog chunk, renders a complete catalog, persists as the versioned global
 preference, and sets the resolved `document.lang`. Hindi and Thai load their bundled script-specific
 faces instead of depending on operating-system fonts. The language, appearance, and account controls
 keep equal outer heights at desktop and phone widths. The language selector keeps Auto first and
@@ -73,7 +73,9 @@ assistive names at desktop and phone widths.
 **Automation:** `tests/localization.spec.ts` owns locale negotiation, preservation, request
 invariance, bundled Hindi and Thai font availability, responsive overflow, and screenshot capture.
 Catalog unit tests prove ICU syntax, exact ID sets, and argument parity; descriptor tests prove
-known, unknown-valid, and malformed handling.
+known, unknown-valid, and malformed handling. The build-manifest gate proves that translated
+catalogs remain dynamic entries outside the initial JavaScript graph and keeps that graph within
+the recorded gzip budget.
 
 ## Deployment Mount and Host-Policy Boundary
 
