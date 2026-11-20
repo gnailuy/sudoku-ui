@@ -116,8 +116,7 @@ export const th: MessageCatalog = {
   'hint.argument.digit': '{digit}',
   'hint.naked-single.constraints':
     'เริ่มที่ {cell} แถว คอลัมน์ และบล็อกของช่องนี้มี {excluded_digits} อยู่แล้ว',
-  'hint.naked-single.only':
-    'ดังนั้น {digit} จึงเป็นตัวเลขเดียวที่ใส่ใน {cell} ได้',
+  'hint.naked-single.only': 'ดังนั้น {digit} จึงเป็นตัวเลขเดียวที่ใส่ใน {cell} ได้',
   'hint.naked-single.apply':
     'ใส่ {digit} ที่ {cell} ช่องที่เหลือตัวเลือกเพียงตัวเดียวเรียกว่า {strategy}',
   'hint.hidden-single.inspect': 'ใน {unit} ลองดูว่า {digit} ลงช่องใดได้บ้าง',
@@ -145,13 +144,11 @@ export const th: MessageCatalog = {
   'hint.naked-triple.apply':
     'ใส่ {digit} ใน {cell} เมื่อรวมตัวเลือกของสามช่องแล้วมีเพียงเลขสามตัวเดียวกัน จะเกิดเป็น {strategy}',
   'hint.naked-quad.cell': 'ใน {unit} ช่อง {cell} มีตัวเลือกเพียง {digits}',
-  'hint.subset-reservation.observe':
-    'ใน {unit} ช่อง {cells} มีได้เฉพาะ {digits}',
+  'hint.subset-reservation.observe': 'ใน {unit} ช่อง {cells} มีได้เฉพาะ {digits}',
   'hint.subset-reservation.explain':
     'ช่องเหล่านี้ต้องใช้ {digits} ภายใน {unit} ช่องอื่นในหน่วยนี้จึงใส่ตัวเลขเหล่านี้ไม่ได้',
   'hint.subset-reservation.apply': 'ลบ {candidates} รูปแบบนี้คือ {strategy}',
-  'hint.subset-reservation.place':
-    'ใส่ {digit} ใน {cell} วิธีนี้คือ {strategy}',
+  'hint.subset-reservation.place': 'ใส่ {digit} ใน {cell} วิธีนี้คือ {strategy}',
   'hint.hidden-subset-confinement.observe':
     'ใน {unit} ตัวเลข {digits} ปรากฏได้เฉพาะใน {cells}',
   'hint.hidden-subset-confinement.explain':
@@ -219,8 +216,7 @@ export const th: MessageCatalog = {
     'ที่ {pivot} ผู้เข้าทดสอบ {pivot_digits} จะเชื่อมต่อเซลล์ปีกที่ {wing_cells}',
   'hint.pivot-wing.explain':
     'แต่ละวิงที่ {wing_cells} ใช้ผู้สมัครคนหนึ่งร่วมกับเดือยที่ {pivot} และทั้งสองวิงมี {shared_digit} ไม่ว่าตัวเลือกเดือยตัวใดจะเป็นจริง ปีกข้างหนึ่งจะต้องมี {shared_digit}',
-  'hint.xy-wing.pivot':
-    '{pivot} เหลือตัวเลือกเพียง {digits} จึงต้องเป็นหนึ่งในนั้น',
+  'hint.xy-wing.pivot': '{pivot} เหลือตัวเลือกเพียง {digits} จึงต้องเป็นหนึ่งในนั้น',
   'hint.xy-wing.case':
     'ถ้า {pivot} เป็น {pivot_digit} ช่อง {wing} จะเป็น {pivot_digit} ไม่ได้ เมื่อเหลือตัวเลือกอีกเพียงตัวเดียวคือ {shared_digit} ช่อง {wing} จึงต้องเป็น {shared_digit}',
   'hint.xy-wing.guarantee':
@@ -229,8 +225,7 @@ export const th: MessageCatalog = {
     '{cells} มองเห็นทั้งสองปีก {wing_cells} เนื่องจากอย่างน้อยหนึ่งปีกเป็น {shared_digit} ให้ลบ {shared_digit} ออกจากช่องเหล่านี้ รูปแบบนี้เรียกว่า {strategy}',
   'hint.xy-wing.place':
     '{cell} มองเห็นช่องปีกทั้งสองที่ {wing_cells} และอย่างน้อยหนึ่งช่องต้องเป็น {shared_digit} จึงลบ {shared_digit} ออกจากช่องนี้ได้ เมื่อเหลือตัวเลือกเพียง {digit} ให้ใส่เลขนี้ลงไป รูปแบบนี้เรียกว่า {strategy}',
-  'hint.xyz-wing.pivot':
-    '{pivot} มีตัวเลือกเพียง {digits} จึงต้องเป็นหนึ่งในนั้น',
+  'hint.xyz-wing.pivot': '{pivot} มีตัวเลือกเพียง {digits} จึงต้องเป็นหนึ่งในนั้น',
   'hint.xyz-wing.case':
     'ถ้า {pivot} เป็น {pivot_digit} ช่อง {wing} ซึ่งอยู่ใน {unit} เดียวกันจะเป็น {pivot_digit} ไม่ได้ และเมื่อตัวเลือกอีกตัวมีเพียง {shared_digit} ช่อง {wing} จึงต้องเป็น {shared_digit}',
   'hint.xyz-wing.pivot-case':
@@ -265,8 +260,7 @@ export const th: MessageCatalog = {
     'เงื่อนไขที่โจทย์ต้องมีคำตอบเพียงแบบเดียวบังคับให้ใส่ {digit} ใน {cell} รูปแบบที่มีช่องหนึ่งซึ่งมีตัวเลือกเกินมาหนึ่งตัวนี้เรียกว่า {strategy}',
   'hint.unique-rectangle.rectangle':
     'ช่องที่ยังไม่เติมทั้งสี่ช่องที่ {cells} เป็นมุมของรูปสี่เหลี่ยมผืนผ้า',
-  'hint.unique-rectangle.pair-corners':
-    'ช่องที่ {cells} มีตัวเลือกเพียง {digits}',
+  'hint.unique-rectangle.pair-corners': 'ช่องที่ {cells} มีตัวเลือกเพียง {digits}',
   'hint.unique-rectangle.third-corner':
     '{cell} ก็มีตัวเลือกเพียง {digits} เช่นกัน ตอนนี้สามมุมมีตัวเลือกคู่เดียวกัน',
   'hint.unique-rectangle.expanded-corner':
@@ -312,8 +306,7 @@ export const th: MessageCatalog = {
     'ลบ {candidates} ความสัมพันธ์ที่เป็นเอกลักษณ์นี้คือ {strategy}',
   'hint.unique-rectangle.place':
     'วาง {digit} ใน {cell} หลังจากใช้ความสัมพันธ์เฉพาะ ลายนี้คือ {strategy}.',
-  'hint.implication-chain.observe':
-    'เริ่มที่ {cell} ซึ่งมีตัวเลือกเพียง {digits}',
+  'hint.implication-chain.observe': 'เริ่มที่ {cell} ซึ่งมีตัวเลือกเพียง {digits}',
   'hint.implication-chain.explain':
     '{from} และ {to} มีตัวเลือกร่วมกันและมองเห็นกัน ตัวเลือกนั้นจึงเป็นจริงพร้อมกันไม่ได้ และการเชื่อมโยงดำเนินต่อไป',
   'hint.implication-chain.apply':
@@ -322,10 +315,8 @@ export const th: MessageCatalog = {
   'hint.narration.look-at': 'ดูสิ',
   'hint.narration.value-conflict': '. ค่าที่ป้อนขัดแย้งกับปริศนา',
   'hint.narration.clear-value': 'เคลียร์ค่าได้ที่',
-  'hint.narration.clear-value-tail':
-    'เพื่อให้สามารถตรวจสอบตารางตัวเลือกได้ต่อไป',
-  'hint.narration.candidate-inconsistent':
-    '. สถานะตัวเลือกไม่สอดคล้องกับกระดาน',
+  'hint.narration.clear-value-tail': 'เพื่อให้สามารถตรวจสอบตารางตัวเลือกได้ต่อไป',
+  'hint.narration.candidate-inconsistent': '. สถานะตัวเลือกไม่สอดคล้องกับกระดาน',
   'hint.narration.reset-candidates': 'รีเซ็ตชุดตัวเลือกที่ ',
   'hint.narration.reset-candidates-tail':
     ' เป็นตัวเลขทั้งหมดที่ค่าที่ถูกต้องในแถว คอลัมน์ และบล็อกอนุญาต',
@@ -344,8 +335,7 @@ export const th: MessageCatalog = {
   'hint.narration.still-needs': 'ยังคงต้องการ',
   'hint.narration.only-cell': 'และ',
   'hint.narration.hidden-single-tail': 'เป็นช่องเดียวที่เป็นไปได้',
-  'hint.narration.hidden-single-name':
-    'ตรงนั้น เทคนิคนี้เรียกว่า Hidden Single',
+  'hint.narration.hidden-single-name': 'ตรงนั้น เทคนิคนี้เรียกว่า Hidden Single',
   'hint.narration.place-result': 'สถานที่',
   'hint.narration.in': 'ใน',
   'hint.narration.remove': 'นำตัวเลือก ',
@@ -402,8 +392,7 @@ export const th: MessageCatalog = {
   'account.confirm.typeEmail': 'พิมพ์ {email} เพื่อยืนยัน',
   'account.label': 'บัญชี',
   'account.continue.title': 'ดำเนินการต่อบนอุปกรณ์อื่น',
-  'account.continue.detail':
-    'ลงชื่อเข้าใช้เพื่อบันทึกเกมที่ใช้งานของเบราว์เซอร์นี้โดยอัตโนมัติ',
+  'account.continue.detail': 'ลงชื่อเข้าใช้เพื่อบันทึกเกมที่ใช้งานของเบราว์เซอร์นี้โดยอัตโนมัติ',
   'account.signIn': 'ลงชื่อเข้าใช้งานด้วย Google',
   'account.signIn.short': 'เข้าสู่ระบบ',
   'game.title': 'ปริศนาระดับ{difficulty}',
@@ -416,25 +405,21 @@ export const th: MessageCatalog = {
   'game.pause': 'หยุดชั่วคราว',
   'status.resumed': 'ปริศนาดำเนินการต่อ',
   'status.paused': 'ปริศนาหยุดชั่วคราว',
-  'status.restarted':
-    'ปริศนาเริ่มต้นใหม่แล้ว ความพยายามครั้งใหม่ ปริศนาเดียวกัน',
+  'status.restarted': 'ปริศนาเริ่มต้นใหม่แล้ว ความพยายามครั้งใหม่ ปริศนาเดียวกัน',
   'status.hintClosed': 'ปิดคำแนะนำแล้ว ปริศนาของคุณไม่เปลี่ยนแปลง',
   'status.strategyApplied': 'ใช้กลยุทธ์แล้ว คุณสามารถยกเลิกได้ในขั้นตอนเดียว',
-  'status.correctionApplied':
-    'ใช้การแก้ไขแล้ว คุณสามารถยกเลิกได้ในขั้นตอนเดียว',
+  'status.correctionApplied': 'ใช้การแก้ไขแล้ว คุณสามารถยกเลิกได้ในขั้นตอนเดียว',
   'status.hintAlreadyApplied': 'คำใบ้นี้สะท้อนให้เห็นบนกระดานแล้ว',
   'status.hintRefreshed': 'บอร์ดเปลี่ยนไป ดังนั้นคำใบ้จึงถูกรีเฟรช',
   'status.accountSaved': 'เกมที่บันทึกไว้ในบัญชีของคุณ',
-  'status.waitBeforeLeaving':
-    'รอการเคลื่อนไหวที่ค้างอยู่ก่อนที่จะออกจากปริศนานี้',
+  'status.waitBeforeLeaving': 'รอการเคลื่อนไหวที่ค้างอยู่ก่อนที่จะออกจากปริศนานี้',
   'status.selectEditableCell': 'เลือกช่องที่สามารถแก้ไขได้ก่อนป้อนตัวเลข',
   'status.savingAccount': 'บันทึกเกมท้องถิ่นของคุณลงในบัญชีของคุณ...',
   'status.restoring': 'กำลังกู้คืนปริศนาของคุณ...',
   'status.restored': 'ปริศนาท้องถิ่นของคุณได้รับการกู้คืนแล้ว',
   'status.puzzleReady': 'ปริศนาระดับ{difficulty}พร้อมแล้ว',
   'status.puzzleRestored': 'กู้คืนปริศนาระดับ{difficulty}แล้ว',
-  'status.waitBeforeStarting':
-    'รอการเคลื่อนไหวที่ค้างอยู่ก่อนที่จะเริ่มปริศนาอื่น',
+  'status.waitBeforeStarting': 'รอการเคลื่อนไหวที่ค้างอยู่ก่อนที่จะเริ่มปริศนาอื่น',
   'status.solved': 'แก้สำเร็จแล้ว! เยี่ยมมาก',
   'status.moveSaved': 'ย้ายที่บันทึกไว้',
   'status.waitBeforeHint': 'รอการเคลื่อนไหวที่ค้างอยู่ก่อนที่จะเปิดคำใบ้',
@@ -459,14 +444,12 @@ export const th: MessageCatalog = {
   'retry.signOut': 'ลองออกจากระบบอีกครั้ง',
   'retry.revoke': 'ลองออกจากระบบทุกที่อีกครั้ง',
   'retry.deleteAccount': 'ลองลบบัญชีอีกครั้ง',
-  'error.accountSave':
-    'เกมในพื้นที่ของคุณปลอดภัย แต่ไม่สามารถบันทึกลงในบัญชีของคุณได้',
+  'error.accountSave': 'เกมในพื้นที่ของคุณปลอดภัย แต่ไม่สามารถบันทึกลงในบัญชีของคุณได้',
   'error.restoring': 'ปริศนาของคุณไม่สามารถกู้คืนได้',
   'error.connection':
     'ไม่สามารถเข้าถึงบริการเกมได้ ตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง',
   'error.http': 'บริการเกมส่งคืนข้อผิดพลาด {status} โปรดลองอีกครั้ง',
-  'error.unavailable':
-    'บริการเกมไม่สามารถใช้งานได้ชั่วคราว บอร์ดของคุณปลอดภัย ลองอีกครั้ง',
+  'error.unavailable': 'บริการเกมไม่สามารถใช้งานได้ชั่วคราว บอร์ดของคุณปลอดภัย ลองอีกครั้ง',
   'error.starting': 'ไม่สามารถเริ่มเกมได้',
   'error.signInAgain': 'ลงชื่อเข้าใช้อีกครั้งเพื่อบันทึกการเคลื่อนไหว',
   'error.localUnavailable': 'เกมท้องถิ่นไม่พร้อมใช้งาน',
@@ -504,11 +487,9 @@ export const th: MessageCatalog = {
   'error.internal-error': 'ไม่สามารถดำเนินการตามคำขอได้',
   'error.account-unavailable': 'คุณสมบัติบัญชีไม่พร้อมใช้งาน',
   'error.account-unauthorized': 'จำเป็นต้องมีเซสชันการสมัครที่ถูกต้อง',
-  'error.csrf-failed':
-    'ไม่สามารถยืนยันการลงชื่อเข้าใช้นี้ได้ กรุณาเข้าสู่ระบบอีกครั้ง',
+  'error.csrf-failed': 'ไม่สามารถยืนยันการลงชื่อเข้าใช้นี้ได้ กรุณาเข้าสู่ระบบอีกครั้ง',
   'error.account-game-not-found': 'ไม่พบเกมที่บันทึกไว้',
-  'error.guest-revision-conflict':
-    'เกมท้องถิ่นมีการเปลี่ยนแปลงก่อนที่จะใช้การดำเนินการนี้',
+  'error.guest-revision-conflict': 'เกมท้องถิ่นมีการเปลี่ยนแปลงก่อนที่จะใช้การดำเนินการนี้',
   'error.guest-claim-conflict': 'เกมท้องถิ่นนี้ถูกบันทึกลงในบัญชีแล้ว',
   'error.malformedDescriptor': 'ไม่สามารถแสดงคำอธิบายได้',
   'account.close': 'ปิดแผงบัญชี',

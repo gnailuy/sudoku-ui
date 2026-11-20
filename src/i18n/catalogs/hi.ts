@@ -80,8 +80,7 @@ export const hi: MessageCatalog = {
     'आगे बढ़ने से पहले, पंक्ति, स्तंभ और बॉक्स में भरे अंकों के आधार पर {cell} के उम्मीदवार फिर से तय करें।',
   'hint.strategy.summary':
     '{strategy} को समझने और लागू करने के लिए ये {steps} चरण पूरे करें।',
-  'hint.value-correction.observe':
-    '{cell} जाँचें। यह अंक बोर्ड से मेल नहीं खाता।',
+  'hint.value-correction.observe': '{cell} जाँचें। यह अंक बोर्ड से मेल नहीं खाता।',
   'hint.value-correction.conclude':
     '{cell} पर मान साफ़ करें ताकि उम्मीदवार ग्रिड की अगली जाँच की जा सके।',
   'hint.candidate-correction.observe':
@@ -128,8 +127,7 @@ export const hi: MessageCatalog = {
   'hint.naked-single.only': 'इसलिए {cell} में केवल {digit} ही रखा जा सकता है।',
   'hint.naked-single.apply':
     '{cell} में {digit} रखें। जिस खाने में केवल एक उम्मीदवार बचता है, वह स्थिति {strategy} कहलाती है।',
-  'hint.hidden-single.inspect':
-    '{unit} में देखें कि {digit} कहाँ रखा जा सकता है।',
+  'hint.hidden-single.inspect': '{unit} में देखें कि {digit} कहाँ रखा जा सकता है।',
   'hint.hidden-single.blockers':
     '{blockers} में पहले से मौजूद {digit} के कारण {unit} के बाकी सभी खाली खानों में {digit} नहीं आ सकता।',
   'hint.hidden-single.only': 'अब केवल {cell} में ही {digit} हो सकता है।',
@@ -158,10 +156,8 @@ export const hi: MessageCatalog = {
     '{unit} में {cells} में केवल {digits} हो सकते हैं।',
   'hint.subset-reservation.explain':
     'इन खानों में मिलकर {digits} ही आएँगे। इसलिए {unit} के हर दूसरे खाने से ये अंक हटाए जा सकते हैं।',
-  'hint.subset-reservation.apply':
-    '{candidates} हटाएँ। यह पैटर्न {strategy} है।',
-  'hint.subset-reservation.place':
-    '{cell} में {digit} भरें। यह पैटर्न {strategy} है।',
+  'hint.subset-reservation.apply': '{candidates} हटाएँ। यह पैटर्न {strategy} है।',
+  'hint.subset-reservation.place': '{cell} में {digit} भरें। यह पैटर्न {strategy} है।',
   'hint.hidden-subset-confinement.observe':
     '{unit} में {digits} केवल {cells} में आ सकते हैं।',
   'hint.hidden-subset-confinement.explain':
@@ -176,14 +172,12 @@ export const hi: MessageCatalog = {
     '{digit} के लिए भी यही दो खाने संभावित हैं। इसलिए {digits} किसी भी क्रम में {cells} में ही आएँगे।',
   'hint.hidden-pair.consequence':
     'ये दोनों खाने {digits} के लिए तय हैं, इसलिए इनमें मौजूद अन्य उम्मीदवार हटाए जा सकते हैं: {candidates}।',
-  'hint.hidden-pair.apply':
-    '{candidates} हटाएँ। इस पैटर्न को {strategy} कहते हैं।',
+  'hint.hidden-pair.apply': '{candidates} हटाएँ। इस पैटर्न को {strategy} कहते हैं।',
   'hint.hidden-triple.first':
     '{unit} में {digit} के लिए केवल {cells} ही संभावित खाने हैं।',
   'hint.hidden-triple.second':
     '{unit} में {digits} के लिए केवल {cells} ही संभावित खाने हैं।',
-  'hint.hidden-triple.third':
-    '{unit} में {digits} भी केवल {cells} में ही आ सकते हैं।',
+  'hint.hidden-triple.third': '{unit} में {digits} भी केवल {cells} में ही आ सकते हैं।',
   'hint.hidden-triple.consequence':
     '{unit} में {digits} इन्हीं खानों तक सीमित हैं, इसलिए इन खानों में कोई अन्य उम्मीदवार नहीं रह सकता।',
   'hint.hidden-triple.apply':
@@ -192,8 +186,7 @@ export const hi: MessageCatalog = {
     '{unit} में {digit} के लिए केवल {cells} ही संभावित खाने हैं।',
   'hint.hidden-quad.second':
     '{unit} में {digits} के लिए केवल {cells} ही संभावित खाने हैं।',
-  'hint.hidden-quad.third':
-    '{unit} में {digits} भी केवल {cells} में ही आ सकते हैं।',
+  'hint.hidden-quad.third': '{unit} में {digits} भी केवल {cells} में ही आ सकते हैं।',
   'hint.hidden-quad.fourth':
     '{unit} में {digits} के संभावित स्थान भी केवल {cells} हैं।',
   'hint.hidden-quad.consequence':
@@ -284,8 +277,7 @@ export const hi: MessageCatalog = {
     '{cell} में {digit} रखें। अद्वितीय समाधान बनाए रखने वाला यह अतिरिक्त-उम्मीदवार पैटर्न {strategy} कहलाता है।',
   'hint.unique-rectangle.rectangle':
     '{cells} के चार खाली खाने एक आयत के चार कोनों पर हैं।',
-  'hint.unique-rectangle.pair-corners':
-    '{cells} में केवल {digits} उम्मीदवार हैं।',
+  'hint.unique-rectangle.pair-corners': '{cells} में केवल {digits} उम्मीदवार हैं।',
   'hint.unique-rectangle.third-corner':
     '{cell} में भी ठीक {digits} ही उम्मीदवार हैं। अब तीन कोनों में उम्मीदवारों की एक ही जोड़ी है।',
   'hint.unique-rectangle.expanded-corner':
@@ -314,8 +306,7 @@ export const hi: MessageCatalog = {
     '{cell} में {pair} के साथ अतिरिक्त उम्मीदवार {extra_digit} भी है।',
   'hint.unique-rectangle.type3-second-expanded':
     '{cell} में भी {pair} के साथ अतिरिक्त उम्मीदवार {extra_digit} है। इन दोनों कोनों में से कम से कम एक पर अतिरिक्त अंक आना आवश्यक है, वरना चारों कोनों में {pair} की अदला-बदली से दो समाधान बनेंगे।',
-  'hint.unique-rectangle.type3-partner':
-    '{cell} में केवल {digits} उम्मीदवार हैं।',
+  'hint.unique-rectangle.type3-partner': '{cell} में केवल {digits} उम्मीदवार हैं।',
   'hint.unique-rectangle.type3-reserve':
     '{corners} में से एक खाने में {digits} का एक अंक और {partner} में दूसरा अंक आएगा। ये दोनों अंक {unit} में इन्हीं स्थानों के लिए तय हैं, इसलिए {target} से {removed_digit} हटाया जा सकता है।',
   'hint.unique-rectangle.type3-place':
@@ -343,8 +334,7 @@ export const hi: MessageCatalog = {
   'hint.narration.value-conflict':
     '. इसका दर्ज किया गया मूल्य पहेली के साथ संघर्ष करता है।',
   'hint.narration.clear-value': 'पर मान साफ़ करें ',
-  'hint.narration.clear-value-tail':
-    ' ताकि उम्मीदवार ग्रिड को आगे जांचा जा सके।',
+  'hint.narration.clear-value-tail': ' ताकि उम्मीदवार ग्रिड को आगे जांचा जा सके।',
   'hint.narration.candidate-inconsistent':
     '. इसका उम्मीदवार राज्य पहेली से असंगत है।',
   'hint.narration.reset-candidates': 'उम्मीदवार सेट को रीसेट करें ',
@@ -380,11 +370,9 @@ export const hi: MessageCatalog = {
   'loading.account.detail':
     'खाते में सेव होने की पुष्टि तक आपकी प्रगति इस डिवाइस पर बनी रहती है।',
   'loading.home.title': 'पहले पन्ने पर लौट रहा हूँ...',
-  'loading.home.detail':
-    'स्तर चयन दिखाने से पहले नवीनतम इंटरफ़ेस की जाँच कर रहा है।',
+  'loading.home.detail': 'स्तर चयन दिखाने से पहले नवीनतम इंटरफ़ेस की जाँच कर रहा है।',
   'loading.restart.title': 'इस पहेली को पुनः प्रारंभ कर रहा हूँ...',
-  'loading.restart.detail':
-    'नया प्रयास तैयार होने तक पुराने बोर्ड को बंद रखें।',
+  'loading.restart.detail': 'नया प्रयास तैयार होने तक पुराने बोर्ड को बंद रखें।',
   'loading.new.title': 'आपका {difficulty} बोर्ड तैयार किया जा रहा है...',
   'confirmation.home.title': 'ये पहेली छोड़ो',
   'confirmation.home.description':
@@ -396,8 +384,7 @@ export const hi: MessageCatalog = {
   'confirmation.restart.replay.description':
     'इन दिए गए बिंदुओं को रखें और इस प्रयास को रीसेट करें।',
   'confirmation.restart.different.title': 'एक अलग पहेली खेलें',
-  'confirmation.restart.different.description':
-    'नए बोर्ड के लिए एक स्तर चुनें.',
+  'confirmation.restart.different.description': 'नए बोर्ड के लिए एक स्तर चुनें.',
   'confirmation.restart.different.level': 'विभिन्न पहेली के लिए स्तर',
   'common.cancel': 'रद्द करें',
   'account.confirm.deleteGame.title': 'इस गेम को हटाएं',
@@ -437,16 +424,13 @@ export const hi: MessageCatalog = {
   'status.paused': 'पहेली रुकी.',
   'status.restarted': 'पहेली फिर से शुरू हुई. ताज़ा प्रयास, वही पहेली।',
   'status.hintClosed': 'संकेत बंद. आपकी पहेली अपरिवर्तित है.',
-  'status.strategyApplied':
-    'रणनीति लागू की गई. आप इसे एक चरण में पूर्ववत कर सकते हैं.',
+  'status.strategyApplied': 'रणनीति लागू की गई. आप इसे एक चरण में पूर्ववत कर सकते हैं.',
   'status.correctionApplied':
     'सुधार लागू किया गया. आप इसे एक चरण में पूर्ववत कर सकते हैं.',
-  'status.hintAlreadyApplied':
-    'यह संकेत पहले से ही बोर्ड पर परिलक्षित होता है।',
+  'status.hintAlreadyApplied': 'यह संकेत पहले से ही बोर्ड पर परिलक्षित होता है।',
   'status.hintRefreshed': 'बोर्ड बदल गया, इसलिए संकेत अपडेट किया गया।',
   'status.accountSaved': 'गेम आपके खाते में सहेजा गया.',
-  'status.waitBeforeLeaving':
-    'इस पहेली को छोड़ने से पहले लंबित चालों की प्रतीक्षा करें।',
+  'status.waitBeforeLeaving': 'इस पहेली को छोड़ने से पहले लंबित चालों की प्रतीक्षा करें।',
   'status.selectEditableCell':
     'कोई संख्या दर्ज करने से पहले एक संपादन योग्य सेल का चयन करें।',
   'status.savingAccount': 'आपका स्थानीय गेम आपके खाते में सहेजा जा रहा है…',
@@ -526,13 +510,11 @@ export const hi: MessageCatalog = {
   'error.internal-error': 'अनुरोध पूरा नहीं किया जा सका.',
   'error.account-unavailable': 'खाता सुविधाएँ अनुपलब्ध हैं.',
   'error.account-unauthorized': 'एक वैध आवेदन सत्र आवश्यक है.',
-  'error.csrf-failed':
-    'इस साइन-इन की पुष्टि नहीं हो सकी। कृपया फिर से साइन इन करें।',
+  'error.csrf-failed': 'इस साइन-इन की पुष्टि नहीं हो सकी। कृपया फिर से साइन इन करें।',
   'error.account-game-not-found': 'सहेजा गया गेम नहीं मिला.',
   'error.guest-revision-conflict':
     'इस क्रिया के लागू होने से पहले स्थानीय खेल बदल गया।',
-  'error.guest-claim-conflict':
-    'यह स्थानीय गेम पहले से ही एक खाते में सहेजा गया था।',
+  'error.guest-claim-conflict': 'यह स्थानीय गेम पहले से ही एक खाते में सहेजा गया था।',
   'error.malformedDescriptor': 'स्पष्टीकरण प्रदर्शित नहीं किया जा सका.',
   'account.close': 'खाता पैनल बंद करें',
   'account.games.title': 'मेरे खेल',
